@@ -1,0 +1,204 @@
+### Авторизация (получить токен)
+POST http://localhost:8080/user/auth
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+
+### Регистрация нового пользователя (если админ не сработал)
+POST http://localhost:8080/user/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "password123"
+}
+
+###
+POST http://localhost:8080/user/auth
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "password123"
+}
+
+###
+POST http://localhost:8080/bookings
+Authorization: Bearer ВСТАВЬТЕ_ВАШ_ТОКЕН
+Content-Type: application/json
+
+{
+  "startDate": "2026-12-10",
+  "endDate": "2026-12-15",
+  "autoSelect": true,
+  "requestId": "my-test-1"
+}
+
+###
+POST http://localhost:8080/bookings
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInVzZXJJZCI6Miwic3ViIjoidGVzdHVzZXIiLCJpYXQiOjE3OTM5NTU5NjAsImV4cCI6MTc5Mzk1OTU2MH0.OhbUtnKOP5S7ciGJNPg5F8V5DWO3hTeLTMyEetU3YRQ
+Content-Type: application/json
+
+{
+  "roomId": 1,
+  "startDate": "2026-12-12",
+  "endDate": "2026-12-14",
+  "requestId": "my-test-2"
+}
+
+### Проверка компенсации (Номер занят)
+POST http://localhost:8080/bookings
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInVzZXJJZCI6Miwic3ViIjoidGVzdHVzZXIiLCJpYXQiOjE3OTM5NTU5NjAsImV4cCI6MTc5Mzk1OTU2MH0.OhbUtnKOP5S7ciGJNPg5F8V5DWO3hTeLTMyEetU3YRQ
+Content-Type: application/json
+
+{
+  "roomId": 1,
+  "startDate": "2026-12-13",
+  "endDate": "2026-12-15",
+  "requestId": "my-conflict-test-1"
+}
+###
+GET http://localhost:8080/api/hotels
+
+
+### 1. Авторизация Админа
+POST http://localhost:8080/user/auth
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+### eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsInJvbGUiOiJVU0VSIiwic3ViIjoiYWRtaW4yIiwiaWF0IjoxNzkzOTY0NDYzLCJleHAiOjE3OTM5NjgwNjN9.PhQffn4SCcErePc8JuNn2cIRcSyw1qbjwuzAjW-XAmE
+}
+###
+POST http://localhost:8080/user/register
+Content-Type: application/json
+
+{
+  "username": "admin2",
+  "password": "123"
+}
+
+### 2. Авторизация обычного пользователя
+POST http://localhost:8080/user/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "password123"
+}
+
+###   eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjMsInJvbGUiOiJVU0VSIiwic3ViIjoidGVzdHVzZXIiLCJpYXQiOjE3OTM5NjQ1NDAsImV4cCI6MTc5Mzk2ODE0MH0.byxbmGpR0CmIXJkSRiXXpn6n2Ntu1TkAErRa9zaBoOA
+POST http://localhost:8080/user/auth
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "password123"
+}
+
+### 3. Попытка создать отель как USER (Должно быть 403)
+POST http://localhost:8080/api/hotels
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjMsInJvbGUiOiJVU0VSIiwic3ViIjoidGVzdHVzZXIiLCJpYXQiOjE3OTM5NjQ1NDAsImV4cCI6MTc5Mzk2ODE0MH0.byxbmGpR0CmIXJkSRiXXpn6n2Ntu1TkAErRa9zaBoOA
+Content-Type: application/json
+
+{
+  "name": "Запрещенный отель",
+  "address": "ул. Тайная, 1"
+}
+
+### 4. Создание отеля Админом
+POST http://localhost:8080/api/hotels
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsInJvbGUiOiJVU0VSIiwic3ViIjoiYWRtaW4yIiwiaWF0IjoxNzkzOTY0NDYzLCJleHAiOjE3OTM5NjgwNjN9.PhQffn4SCcErePc8JuNn2cIRcSyw1qbjwuzAjW-XAmE
+Content-Type: application/json
+
+{
+  "name": "Империал",
+  "address": "ул. Ленина, 5"
+}
+
+###
+POST http://localhost:8080/user/register
+Content-Type: application/json
+
+{
+  "username": "admin3",
+  "password": "123"
+}
+
+### eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c2VySWQiOjIsInN1YiI6ImFkbWluMyIsImlhdCI6MTc5Mzk2NTA0OSwiZXhwIjoxNzkzOTY4NjQ5fQ.MtNsIncjNs1K4h7C2RoPCeR54wpcslXR3WNZBtbxPnI
+###
+POST http://localhost:8080/api/hotels
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c2VySWQiOjIsInN1YiI6ImFkbWluMyIsImlhdCI6MTc5Mzk2NTA0OSwiZXhwIjoxNzkzOTY4NjQ5fQ.MtNsIncjNs1K4h7C2RoPCeR54wpcslXR3WNZBtbxPnI
+Content-Type: application/json
+
+{
+  "name": "Империал",
+  "address": "ул. Ленина, 5"
+}
+
+
+### 5. Создание номера Админом
+POST http://localhost:8080/api/rooms
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c2VySWQiOjIsInN1YiI6ImFkbWluMyIsImlhdCI6MTc5Mzk2NTA0OSwiZXhwIjoxNzkzOTY4NjQ5fQ.MtNsIncjNs1K4h7C2RoPCeR54wpcslXR3WNZBtbxPnI
+Content-Type: application/json
+
+{
+  "hotelId": 3,
+  "number": "301",
+  "available": true,
+  "timesBooked": 0
+}
+
+### Тест 1: Ошибка валидации (400 Bad Request)
+POST http://localhost:8080/bookings
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "roomId": 1,
+  "startDate": "2020-01-01",
+  "endDate": "2020-01-05",
+  "requestId": "validation-error-test"
+}
+
+###
+
+POST http://localhost:8080/user/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "password123"
+}
+
+eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsInJvbGUiOiJVU0VSIiwic3ViIjoidGVzdHVzZXIiLCJpYXQiOjE3OTM5NjU5ODksImV4cCI6MTc5Mzk2OTU4OX0.qmwqhiQ7iBE9oqNNE8XUuGwdsKCaE2PdURBSYFyyEFM
+
+
+### Тест 1: Ошибка валидации (400 Bad Request)
+POST http://localhost:8080/bookings
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsInJvbGUiOiJVU0VSIiwic3ViIjoidGVzdHVzZXIiLCJpYXQiOjE3OTM5NjU5ODksImV4cCI6MTc5Mzk2OTU4OX0.qmwqhiQ7iBE9oqNNE8XUuGwdsKCaE2PdURBSYFyyEFM
+Content-Type: application/json
+
+{
+  "roomId": 1,
+  "startDate": "2020-01-01",
+  "endDate": "2020-01-05",
+  "requestId": "validation-error-test"
+}
+
+### Тест 2.1: Успешная бронь (создаем блокировку)
+POST http://localhost:8080/bookings
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsInJvbGUiOiJVU0VSIiwic3ViIjoidGVzdHVzZXIiLCJpYXQiOjE3OTM5NjU5ODksImV4cCI6MTc5Mzk2OTU4OX0.qmwqhiQ7iBE9oqNNE8XUuGwdsKCaE2PdURBSYFyyEFM
+Content-Type: application/json
+
+{
+  "roomId": 1,
+  "startDate": "2027-01-12",
+  "endDate": "2027-01-14",
+  "requestId": "saga-conflict-test-1"
+}
